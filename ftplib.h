@@ -70,32 +70,32 @@ typedef bool (*FtpCallbackCert)(void *arg, X509 *cert);
 #endif
 
 struct ftphandle {
-	char *cput,*cget;
-	int handle;
-	int cavail,cleft;
-	char *buf;
-	int dir;
-	ftphandle *ctrl;
-	int cmode;
-	struct timeval idletime;
-	FtpCallbackXfer xfercb;
-	FtpCallbackIdle idlecb;
-	FtpCallbackLog logcb;
-	void *cbarg;
-	off64_t xfered;
-	off64_t cbbytes;
-	off64_t xfered1;
-	char response[256];
+    char *cput,*cget;
+    int handle;
+    int cavail,cleft;
+    char *buf;
+    int dir;
+    ftphandle *ctrl;
+    int cmode;
+    struct timeval idletime;
+    FtpCallbackXfer xfercb;
+    FtpCallbackIdle idlecb;
+    FtpCallbackLog logcb;
+    void *cbarg;
+    off64_t xfered;
+    off64_t cbbytes;
+    off64_t xfered1;
+    char response[256];
 #ifndef NOSSL
-	SSL* ssl;
-	SSL_CTX* ctx;
-	BIO* sbio;
-	int tlsctrl;
-	int tlsdata;
-	FtpCallbackCert certcb;
+    SSL* ssl;
+    SSL_CTX* ctx;
+    BIO* sbio;
+    int tlsctrl;
+    int tlsdata;
+    FtpCallbackCert certcb;
 #endif
-	off64_t offset;
-	bool correctpasv;
+    off64_t offset;
+    bool correctpasv;
 };
 
 #if defined(_WIN32)  
@@ -105,33 +105,33 @@ class ftplib {
 #endif
 public:
 
-	enum accesstype
-	{
-		dir = 1,
-		dirverbose,
-		fileread,
-		filewrite,
-		filereadappend,
-		filewriteappend
-	}; 
+    enum accesstype
+    {
+      dir = 1,
+      dirverbose,
+      fileread,
+      filewrite,
+      filereadappend,
+      filewriteappend
+    }; 
 
-	enum transfermode
-	{
-		ascii = 'A',
-		image = 'I'
-	};
+    enum transfermode
+    {
+      ascii = 'A',
+      image = 'I'
+    };
 
-	enum connmode
-	{
-		pasv = 1,
-		port
-	};
+    enum connmode
+    {
+      pasv = 1,
+      port
+    };
 
-	enum fxpmethod
-	{
-		defaultfxp = 0,
-        alternativefxp
-	};
+    enum fxpmethod
+    {
+      defaultfxp = 0,
+          alternativefxp
+    };
 
     enum dataencryption
     {
@@ -139,8 +139,8 @@ public:
         secure
     };
 
-	ftplib();
-	~ftplib();
+    ftplib();
+    ~ftplib();
     char* LastResponse();
     int Connect(const char *host);
     int Login(const char *user, const char *pass);
@@ -161,25 +161,25 @@ public:
     int Rename(const char *src, const char *dst);
     int Delete(const char *path);
 #ifndef NOSSL    
-	int SetDataEncryption(dataencryption enc);
+    int SetDataEncryption(dataencryption enc);
     int NegotiateEncryption();
-	void SetCallbackCertFunction(FtpCallbackCert pointer);
+    void SetCallbackCertFunction(FtpCallbackCert pointer);
 #endif
     int Quit();
     void SetCallbackIdleFunction(FtpCallbackIdle pointer);
     void SetCallbackLogFunction(FtpCallbackLog pointer);
-	void SetCallbackXferFunction(FtpCallbackXfer pointer);
-	void SetCallbackArg(void *arg);
+    void SetCallbackXferFunction(FtpCallbackXfer pointer);
+    void SetCallbackArg(void *arg);
     void SetCallbackBytes(off64_t bytes);
-	void SetCorrectPasv(bool b) { mp_ftphandle->correctpasv = b; };
+    void SetCorrectPasv(bool b) { mp_ftphandle->correctpasv = b; };
     void SetCallbackIdletime(int time);
     void SetConnmode(connmode mode);
     static int Fxp(ftplib* src, ftplib* dst, const char *pathSrc, const char *pathDst, transfermode mode, fxpmethod method);
     
-	ftphandle* RawOpen(const char *path, accesstype type, transfermode mode);
-	int RawClose(ftphandle* handle); 
-	int RawWrite(void* buf, int len, ftphandle* handle);
-	int RawRead(void* buf, int max, ftphandle* handle); 
+    ftphandle* RawOpen(const char *path, accesstype type, transfermode mode);
+    int RawClose(ftphandle* handle); 
+    int RawWrite(void* buf, int len, ftphandle* handle);
+    int RawRead(void* buf, int max, ftphandle* handle); 
 
 private:
     ftphandle* mp_ftphandle;
@@ -194,13 +194,13 @@ private:
     int FtpAccess(const char *path, accesstype type, transfermode mode, ftphandle *nControl, ftphandle **nData);
     int FtpClose(ftphandle *nData);
 	
-	int socket_wait(ftphandle *ctl);
+    int socket_wait(ftphandle *ctl);
     int readline(char *buf,int max,ftphandle *ctl);
     int writeline(char *buf, int len, ftphandle *nData);
     int readresp(char c, ftphandle *nControl);
 	
-	void ClearHandle();
-	int CorrectPasvResponse(unsigned char *v);
+    void ClearHandle();
+    int CorrectPasvResponse(unsigned char *v);
 };
 
 #endif
