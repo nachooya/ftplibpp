@@ -619,7 +619,7 @@ int ftplib::FtpAcceptConnection(ftphandle *nData, ftphandle *nControl)
 int ftplib::FtpAccess(const char *path, accesstype type, transfermode mode, ftphandle *nControl, ftphandle **nData)
 {
 	char buf[256];
-	int dir;
+	int dir, ret;
 
 	if ((path == NULL) && ((type == ftplib::filewrite)
 		|| (type == ftplib::fileread)
@@ -780,7 +780,7 @@ int ftplib::FtpOpenPort(ftphandle *nControl, ftphandle **nData, transfermode mod
 	if (mp_ftphandle->offset != 0)
 	{
 	char buf[256];
-	sprintf(buf,"REST %ld", mp_ftphandle->offset);
+	sprintf(buf,"REST %lld", mp_ftphandle->offset);
 	if (!FtpSendCmd(buf,'3',nControl))
 	{
 		net_close(sData);
@@ -805,7 +805,7 @@ int ftplib::FtpOpenPort(ftphandle *nControl, ftphandle **nData, transfermode mod
 
 	if (!FtpSendCmd(cmd, '1', nControl))
 	{
-		FtpClose(*nData);
+    FtpClose((ftphandle*)nData);
 		*nData = NULL;
 		return -1;
 	}
@@ -884,7 +884,7 @@ int ftplib::FtpOpenPasv(ftphandle *nControl, ftphandle **nData, transfermode mod
 	if (mp_ftphandle->offset != 0)
 	{
 		char buf[256];
-		sprintf(buf,"REST %ld",mp_ftphandle->offset);
+		sprintf(buf,"REST %lld",mp_ftphandle->offset);
 		if (!FtpSendCmd(buf,'3',nControl)) return 0;
 	}
 
